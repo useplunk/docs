@@ -1,0 +1,60 @@
+---
+title: 'Using JSX Email'
+description: 'Learn how to send transactional emails with Plunk & JSX Email'
+icon: 'mailbox'
+---
+
+[JSX email](https://jsx.email) enables you to build emails with a delightful developer experience. You can use the Plunk Node.js SDK with JSX email.
+
+# Transactional emails
+When using JSX Email, you can use the Plunk Node.js SDK. Install it with your favorite package manager:
+## Install dependencies
+
+<CodeGroup>
+    ```sh npm
+    npm i @plunk/node jsx-email
+    ```
+    ```sh yarn
+    yarn add @plunk/node jsx-email
+    ```
+</CodeGroup>
+
+## Create a component
+Use JSX email components to create a new email template. You can find plenty of examples on the [samples section](https://samples.jsx.email/).
+
+```jsx
+import * as React from "react";
+import { Section, Text, Button } from "jsx-email";
+
+export const Email = ({ url }) => {
+  return (
+    <Section>
+      <Button href={url}>Click me!</Button>
+    </Section>
+  );
+};
+```
+
+## Convert and send it!
+Now that you have a component, use the `render` function to convert it to HTML, and [send it with Plunk](/api-reference/transactional/send).
+
+```ts
+import Plunk from "@plunk/node";
+import { render } from "jsx-email";
+import { Email } from "./email";
+
+const plunk = new Plunk(process.env.PLUNK_API_KEY);
+
+const body = render(<Email url={"https://useplunk.com"} />);
+
+plunk.emails.send({
+  to: "hello@useplunk.com",
+  subject: "Hello world!",
+  body,
+});
+```
+
+# Actions
+Plunk [actions](/overview#actions) support JSX Email as well. You cannot use JSX Email directly, and will have to compile your JSX Email component to HTML first.
+
+Once you have your HTML, you can paste it into the Plunk template editor and use it as a template for your actions.

@@ -1,0 +1,27 @@
+---
+title: "Subscribe contact"
+api: "POST https://api.useplunk.com/v1/contacts/subscribe"
+description: "Subscribes a contact"
+---
+
+
+### Body
+<ParamField body="id" type="string" placeholder={'550e8400-e29b-41d4-a716-446655440000'} required>
+    The ID of the contact you want to subscribe
+</ParamField>
+
+### Headers
+<ParamField header="Content-Type" type="string" placeholder={"application/json"} required>
+    `application/json`
+</ParamField>
+
+### Response
+<ResponseExample>
+    ```json Response
+    {
+        "success": true,
+        "contact": "80d74d13-16eb-48c5-bc2b-aae6fd5865cc",
+        "subscribed": true
+    }
+    ```
+</ResponseExample>

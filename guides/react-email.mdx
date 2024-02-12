@@ -1,0 +1,65 @@
+---
+title: 'Using React Email'
+description: 'Learn how to send transactional emails with Plunk & React Email'
+icon: 'mailbox'
+---
+
+[React Email](https://react.email) took the React community by storm. It's a great way to build transactional email templates with React.
+It is fully compatible with Plunk, and works out of the box. In this guide, we'll show you how to get started with React Email and Plunk.
+
+# Transactional emails
+When using Plunk's [transactional email API](/api-reference/transactional), you can use React Email to build your email templates directly in your code.
+## Install dependencies
+You can use the Plunk Node.js SDK. Install it with your favorite package manager:
+
+<CodeGroup>
+```sh npm
+npm i @plunk/node @react-email/render
+```
+```sh yarn
+yarn add @plunk/node @react-email/render
+```
+</CodeGroup>
+
+## Create a component
+Use React Email to create a reusable component. You can find a ton of examples on the [React Email website](https://react.email/examples).
+
+```jsx
+import * as React from 'react';
+import { Html } from '@react-email/html';
+import { Button } from '@react-email/button';
+
+export default function Email(props) {
+  const { url } = props;
+
+  return (
+    <Html lang="en">
+      <Button href={url}>Click me!</Button>
+    </Html>
+  );
+}
+```
+
+## Convert and send it!
+Now that you have a component, use the `render` function to convert it to HTML, and [send it with Plunk](/api-reference/transactional/send).
+
+```ts
+import Plunk from '@plunk/node';
+import { render } from '@react-email/render';
+import { Email } from './email';
+
+const plunk = new Plunk("<API_KEY>");
+
+const body = render(<Email url={"https://useplunk.com"} />);
+
+const success = await plunk.emails.send({
+    to: "hello@useplunk.com",
+    subject: "Hello world!",
+    body,
+});
+```
+
+# Actions
+Plunk [actions](/overview#actions) support React Email as well. You cannot use React Email directly, and will have to compile your React Email component to HTML first.
+
+Once you have your HTML, you can paste it into the Plunk template editor and use it as a template for your actions.
