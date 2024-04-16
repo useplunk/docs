@@ -55,6 +55,15 @@ await fetch('https://api.useplunk.com/v1/send', {
 });
 ```
 
+## Default values
+You can also set default values for metadata keys. If a key does not exist, the default value will be used.
+
+Extend the template with a default value using `??`
+
+```
+{{project ?? Plunk}}
+```
+
 ## Non-persistent metadata
 By default, metadata is persistent. This means that if you track an event and attach metadata, that data will be stored on the contact and will be available to use in the future.
 
