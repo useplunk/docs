@@ -26,6 +26,9 @@ description: "Send emails with a single API call."
 <ParamField body="reply" placeholder="hello@useplunk.com" type="string">
     Override the reply-to address. Defaults to the from address or your verified email if the from address is not set.
 </ParamField>
+<ParamField body="headers" type="object">
+    Additional headers to include in the email.
+</ParamField>
 
 ### Headers
 <ParamField header="Content-Type" type="string" required>
