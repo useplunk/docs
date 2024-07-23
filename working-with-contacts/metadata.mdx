@@ -1,0 +1,91 @@
+---
+title: 'Metadata'
+description: 'Attach metadata to your contacts and use it'
+icon: 'database'
+---
+
+You will often want to attach metadata to your contacts. For example, you might want to store their name, address, or the name of their company.
+
+When [tracking events](/api-reference/actions/track), you can attach metadata to the contact. This metadata will be available to view in the dashboard, can be used to [segment contacts](/working-with-contacts/segmentation), and can be used to [personalize messages](/api-reference/actions/personalize).
+
+## Adding metadata
+In this example, we will track the event `project-created` and attach the name of the project to the contact.
+
+<Warning>Metadata keys are case-sensitive!</Warning>
+
+```javascript
+await fetch('https://api.useplunk.com/v1/track', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "event": "new-project",
+        "email": "hello@useplunk.com",
+        "data": {
+            "project": "Plunk"
+        }
+    })
+});
+```
+
+The project key will be added to the contact and will be available to use in the dashboard. Keys that do not exist will be created, and keys that do exist will be updated.
+
+## Using metadata in templates
+You will often want to use metadata in your templates. Personalizing your messages is a great way to increase engagement and conversion rates.
+
+When you are creating a new template, you can use the `{{data}}` syntax to access the metadata. For example, if you wanted to use the name of the project in your template, you could use `{{project}}`.
+
+## Using metadata in transactional emails
+You can also use metadata in your [transactional emails](/api-reference/transactional). Use the `{{data}}` syntax to access the metadata. For example, if you wanted to use the name of the project in your email, you could use `{{project}}`.
+
+```javascript
+await fetch('https://api.useplunk.com/v1/send', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "to": "hello@useplunk.com",
+        "subject": "Welcome {{project}}",
+        "body": "Welcome to Plunk, {{project}}!"
+    })
+});
+```
+
+## Default values
+You can also set default values for metadata keys. If a key does not exist on a contact, the default value will be used instead.
+
+Extend the template with a default value using `??`
+
+```
+{{project ?? Plunk}}
+```
+
+## Non-persistent metadata
+By default, metadata is persistent. This means that if you track an event and attach metadata, that data will be stored on the contact and will be available to use in the future.
+
+This is not always desirable. For example, if you want to send a one-time password or expiring URL. In that case, you need to explicitly set the metadata to be non-persistent.
+
+```javascript
+await fetch('https://api.useplunk.com/v1/track', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "event": "new-project",
+        "email": "hello@useplunk.com",
+        "data": {
+            "project": "Plunk",
+            "one-time-password": {
+                "value": "123456",
+                "persistent": false
+            }
+        }
+    })
+});
+```

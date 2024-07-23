@@ -1,0 +1,158 @@
+---
+title: Self-hosting Plunk
+description: Learn how to self-host Plunk on your own infrastructure
+---
+
+## Prerequisites
+Plunk is built on top of [AWS SES](https://aws.amazon.com/ses/). You will need an active AWS account with SES enabled to self-host it.
+
+## Limitations
+- Plunk is designed to run in a single AWS region. If you need to run Plunk in multiple regions, you will need to deploy multiple instances.
+
+## Self-hosting
+### 1. Configuring AWS
+To provide the feedback loop (delivery, bounce, and complaint notifications) an SNS topic and configuration set are required.
+
+#### 1.1 SNS Topic
+Head over to the [SNS console](https://console.aws.amazon.com/sns/v3/home) and create a new Standard topic.
+
+![SNS Topic](/images/self-host/sns-topic.png)
+
+Once the topic is created, you will need to create a subscription to the topic. Plunk requires an HTTPS subscription to the topic on the `/api/webhooks/incoming/sns` endpoint.
+
+<Info>
+    Replace `https://plunk.example.com` with the domain where you want to host Plunk.
+</Info>
+
+![SNS Subscription](/images/self-host/sns-subscription.png)
+
+#### 1.2 Configuration Set
+Head over to the [SES console](https://console.aws.amazon.com/ses/home) and create a new configuration set.
+The name of this configuration set will be used as the value for the `AWS_SES_CONFIGURATION_SET` environment variable.
+
+![Configuration Set](/images/self-host/ses-configuration-set.png)
+
+Add a new event destination to the configuration set. The event destination should be the SNS topic created in the previous step.
+
+Plunk can track the following events:
+- Sends
+- Deliveries
+- Hard bounces
+- Complaints
+- Opens
+- Clicks
+
+![Events](/images/self-host/ses-events.png)
+
+For the final step, link the configuration set to your SNS topic.
+
+![Event Destination](/images/self-host/ses-event-destination.png)
+
+#### 1.3 AWS Credentials
+Plunk requires an `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY` to interact with the AWS API. These credentials should be added to the environment variables.
+
+We recommend creating a new security policy with the following permissions
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": [
+				"ses:SetIdentityMailFromDomain",
+				"ses:GetIdentityDkimAttributes",
+				"ses:SendRawEmail",
+				"ses:GetIdentityVerificationAttributes",
+				"ses:VerifyDomainDkim",
+				"ses:ListIdentities",
+				"ses:SetIdentityFeedbackForwardingEnabled"
+			],
+			"Resource": "*"
+		}
+	]
+}
+```
+
+This policy can be attached to a new IAM user with their own access key and secret.
+
+<Warning>
+    Do not use your root account credentials. Create a new IAM user with the required permissions.
+</Warning>
+
+### 2. Docker Compose
+Plunk is available as a Docker image on [Docker Hub](https://hub.docker.com/r/driaug/plunk).
+
+Since Plunk relies on a PostgreSQL database and Redis cache, the easiest way to get started is to use the following Docker Compose setup.
+
+These environment variables were created in the previous step:
+- `AWS_REGION`: The region where your AWS account and services are located
+- `AWS_ACCESS_KEY_ID`: The AWS access key ID
+- `AWS_SECRET_ACCESS_KEY`: The AWS secret access key
+- `AWS_SES_CONFIGURATION_SET`: The name of the SES configuration set
+
+These environment variables need to be added:
+- `JWT_SECRET`: A secret key used to sign JWT tokens
+- `APP_URI`: The domain where you will be hosting Plunk
+- `API_URI`: The domain where you will be hosting the API, this is should be your `APP_URI` with `/api` appended to it
+
+```yaml
+version: '3'
+services:
+  plunk:
+    image: "driaug/plunk"
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      REDIS_URL: '${REDIS_URL:-redis://redis:6379}'
+      DATABASE_URL: '${DATABASE_URL:-postgresql://postgres:postgres@db:5432/postgres}'
+      JWT_SECRET: '${JWT_SECRET}'
+      AWS_REGION: '${AWS_REGION}'
+      AWS_ACCESS_KEY_ID: '${AWS_ACCESS_KEY_ID}'
+      AWS_SECRET_ACCESS_KEY: '${AWS_SECRET_ACCESS_KEY}'
+      AWS_SES_CONFIGURATION_SET: '${AWS_SES_CONFIGURATION_SET}'
+      NEXT_PUBLIC_API_URI: '${API_URI}'
+      API_URI: '${API_URI}'
+      APP_URI: '${APP_URI}'
+    entrypoint: [ "/app/entry.sh" ]
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postgres" ]
+      interval: 10s
+      retries: 5
+      timeout: 10s
+  redis:
+    image: redis
+
+```
+
+### 3. Running Plunk
+
+#### 3.1 Confirming the SNS Topic
+Before an SNS topic can be used, it must be confirmed.
+
+Head over to the [SNS console](https://console.aws.amazon.com/sns/v3/home) and select the subscription created in step 1.1.
+
+Select the subscription and click on `Request confirmation`.
+
+AWS will send a mock HTTP POST request to the endpoint. Plunk cannot automatically confirm the subscription, you will need to manually confirm it.
+
+![SNS Confirmation](/images/self-host/sns-confirm.png)
+
+Plunk will recognize that you want to confirm the subscription and show you the URL to confirm it.
+![Plunk Confirmation](/images/self-host/sns-confirm-plunk.png)
+
+

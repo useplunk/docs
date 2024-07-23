@@ -1,0 +1,112 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Plunk",
+  "logo": {
+    "dark": "/logo/plunk-dark.svg",
+    "light": "/logo/plunk-light.svg"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#262626",
+    "light": "#F5F5F5",
+    "dark": "#262626",
+    "background": {
+      "dark": "#090014"
+    },
+    "anchors": {
+      "from": "#FF7F57",
+      "to": "#9563FF"
+    }
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://useplunk.com/discord"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "getting-started/introduction",
+        "getting-started/overview",
+        "getting-started/self-hosting"
+      ]
+    },
+    {
+      "group": "Guides",
+      "pages": [
+        "guides/setting-up-automation",
+        "guides/react-email",
+        "guides/jsx-email",
+        "guides/double-opt-in"
+      ]
+    },
+    {
+      "group": "Configuration",
+      "pages": [
+        "configuration/domain"
+      ]
+    },
+    {
+      "group": "Working with contacts",
+      "pages": [
+        "working-with-contacts/metadata",
+        "working-with-contacts/segmentation",
+        "working-with-contacts/subscribe-state"
+      ]
+    },
+    {
+      "group": "API Documentation",
+      "pages": [
+        "api-reference/base-url",
+        "api-reference/authentication"
+      ]
+    },
+    {
+      "group": "Automations",
+      "pages": [
+        "api-reference/actions/track"
+      ]
+    },
+    {
+      "group": "Transactional",
+      "pages": [
+        "api-reference/transactional/send"
+      ]
+    },
+    {
+      "group": "Contacts",
+      "pages": [
+        "api-reference/contacts/id",
+        "api-reference/contacts/get",
+        "api-reference/contacts/count",
+        "api-reference/contacts/create",
+        "api-reference/contacts/subscribe",
+        "api-reference/contacts/unsubscribe",
+        "api-reference/contacts/delete"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/useplunk",
+    "github": "https://github.com/useplunk"
+  },
+  "api": {
+    "auth": {
+      "method": "bearer"
+    }
+  },
+  "analytics": {
+    "pirsch": {
+      "id": "3EeqIyq5f0ImhcwOHA7jnHXhozyZmrrL"
+    }
+  }
+}

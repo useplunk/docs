@@ -1,0 +1,52 @@
+---
+title: "Track event"
+api: "POST https://api.useplunk.com/v1/track"
+description: "Track events in your applications and send them to Plunk"
+---
+
+### Body
+<ParamField body="event" placeholder="new-project" type="string" required>
+    The event you want to track
+</ParamField>
+<ParamField body="email" placeholder="hello@useplunk.com" type="string" required>
+    The email address
+</ParamField>
+<ParamField body="subscribed" placeholder="true" type="boolean" default={"true"}>
+    Should the contact be <a href={'/working-with-contacts/subscribe-state'}>subscribed</a>
+</ParamField>
+<ParamField body="data" type="object" placeholder={{"project": "Plunk"}}>
+    Metadata you want to attach to the contact.
+</ParamField>
+
+### Headers
+<ParamField header="Content-Type" type="string" placeholder={"application/json"} required>
+    `application/json`
+</ParamField>
+
+### Response
+
+<ResponseField name="success" type="boolean">
+    Indicates whether the call was successful.
+</ResponseField>
+<ResponseField name="contact" type="string">
+    The ID of the contact. If the contact already exists, the ID will be returned. If the contact is new, a new ID will be generated.
+</ResponseField>
+<ResponseField name="event" type="string">
+    The ID of the event. If the event already exists, the ID will be returned. If the event is new, a new ID will be generated.
+</ResponseField>
+<ResponseField name="timestamp" type="datetime">
+    The timestamp of the event.
+</ResponseField>
+
+<ResponseExample>
+
+    ```json Response
+    {
+        "success": true,
+        "contact": "80d74d13-16eb-48c5-bc2b-aae6fd5865cc",
+        "event":  "541fb6c3-3299-429b-980d-82ca5907abeb",
+        "timestamp": "1970-01-01T00:00:00.000Z"
+    }
+    ```
+
+</ResponseExample>

@@ -1,0 +1,36 @@
+---
+title: 'Subscriptions'
+description: 'Updating the subscription status of a contact'
+icon: 'user-check'
+---
+
+Contacts in Plunk are either subscribed or unsubscribed.
+
+Depending on the status of a contact, they will receive or not receive emails from Plunk.
+
+|                                      | Subscribed | Unsubscribed |
+|--------------------------------------|------------|--------------|
+| Actions with Marketing templates     | ✔️         | ✖️           |
+| Actions with Transactional templates | ✔️         | ✔️           |
+| Transactional emails                 | ✔️         | ✔️           |
+| Campaigns                            | ✔️         | ✖️           |
+
+## Updating the subscription status of a contact
+Giving contacts the ability to update their subscription status for marketing emails is a requirement in many countries, and is considered a best practice in others.
+
+There are two ways to update the subscription status of a contact.
+
+### Using Plunk-hosted pages
+Each contact in Plunk has a set of three pages that can be used to update their subscription status.
+
+<Tip>
+    The URLs below are ready to use. Plunk will automatically fill in the ID for both actions and transactional emails.
+</Tip>
+
+- `https://app.useplunk.com/manage/{{plunk_id}}`, allows a contact to subscribe or unsubscribe depending on their current status.
+- `https://app.useplunk.com/unsubscribe/{{plunk_id}}`, allows a contact to unsubscribe.
+- `https://app.useplunk.com/subscribe/{{plunk_id}}`, allows a contact to subscribe.
+
+### Using the Plunk API
+With the ID of the contact, you can either [subscribe](/api-reference/contacts/subscribe) or [unsubscribe](/api-reference/contacts/unsubscribe) them.
+

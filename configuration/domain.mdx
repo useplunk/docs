@@ -1,0 +1,30 @@
+---
+title: 'Custom domain'
+description: 'Adding & verifying a custom domain'
+icon: 'globe'
+---
+
+Sending emails from your own domain is a great way to build trust with your customers.
+
+## Verifying your domain
+When verifying your domain with Plunk, you choose a default sending address for your account. This is the address that we will use to send emails from your domain.
+
+To verify your domain, you need to add 2 TXT and 3 CNAME records to your domain. You can find these records in the [project settings](https://app.useplunk.com/settings/identity).
+
+By adding these records, you are giving Plunk permission to send emails from your domain, you can revoke this permission at any time by removing the records.
+
+Plunk uses the industry standard [DKIM](https://en.wikipedia.org/wiki/DomainKeys_Identified_Mail) and [SPF](https://en.wikipedia.org/wiki/Sender_Policy_Framework) protocols to send emails from your domain. These protocols are used by email providers to verify that emails are sent from the correct domain.
+
+## DMARC
+DMARC is a way to configure what happens to emails when they fail SPF or DKIM checks. We recommend setting your DMARC policy to `quarantine` or `reject` to prevent spoofing of your domain.
+
+- `quarantine` - Emails that fail SPF or DKIM checks will be sent to the spam folder.
+- `reject` - Emails that fail SPF or DKIM checks will be rejected.
+
+You can add a DMARC policy to your domain by adding a TXT record with the name `_dmarc` and the value `v=DMARC1; p=reject;`.
+
+| Type | Name | Value |
+| ---- | ----- | -----|
+| `TXT` | `_dmarc` | `v=DMARC1; p=reject;` |
+
+This example record will tell email providers to reject any emails that fail SPF or DKIM checks.

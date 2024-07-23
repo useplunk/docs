@@ -1,0 +1,41 @@
+---
+title: 'Setting up an automation'
+description: 'Learn how to set up an automated email flow with Plunk'
+icon: 'wand-sparkles'
+---
+
+Automations are the bread and butter of Plunk. They allow you to set up a flow of emails that are sent to your users based on their actions. You might want to send a welcome email to new users and ask them for feedback a couple of days later.
+
+## Tracking events
+Events are the actions that your users take on your website or app. You track events by calling the [Plunk API](/api-reference/actions/track).
+
+An example of an event is `new-project`, which you might want to track when a user creates a new project. You would send it to Plunk like this:
+```javascript
+await fetch('https://api.useplunk.com/v1/track', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "event": "new-project",
+        "email": "hello@useplunk.com"
+    })
+});
+```
+
+Events will automatically show up in the Plunk dashboard, as well as newly created contacts.
+
+## Creating a template
+Templates are the blueprints for your emails. They allow you to create a design that you can edit and reuse. Plunk's template editor makes it easy to create beautiful emails that look great on all devices.
+
+<Frame>
+![Plunk email editor](/images/editor.png)
+</Frame>
+
+## Setting up an action
+Once you have an event and action on hand, you can bring them together in an action. Actions allow you to configure what events trigger which emails. You can also set up delays and conditions to make sure that your emails are sent at the right time.
+
+<Frame>
+    ![Plunk action editor](/images/action.png)
+</Frame>

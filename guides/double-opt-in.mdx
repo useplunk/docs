@@ -1,0 +1,46 @@
+---
+title: 'Setting up double opt-in'
+description: 'Learn how to set up double opt-in for your contacts'
+icon: 'check-double'
+---
+
+Double opt-in is a great way to ensure that your contacts are interested in receiving your emails.
+
+When you set up double opt-in, your contacts will receive an email asking them to confirm their subscription. Only after they confirm will they be added to the subscribed list.
+
+## Creating an unsubscribed contact
+We will start by creating a contact that is unsubscribed. You can do this by triggering an event and setting the `subscribed` property to `false`.
+
+```javascript
+await fetch('https://api.useplunk.com/v1/track', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "event": "subscribed",
+        "email": "hello@useplunk.com",
+        "subscribed": false
+    })
+});
+```
+
+## Setting up a double opt-in template & action
+Next, we will create a template and action that will be used to send the double opt-in email.
+
+For the template there are two possible options:
+
+- Use Plunk's subscription page, which is available for each contact at <Tooltip tip="plunk_id is an automatic variable, you can use it in templates without any configuration">`https://app.useplunk.com/subscribe/{{plunk_id}}`</Tooltip>
+- Build your own subscription page and use the [contacts API](/api-reference/contacts/subscribe) to subscribe the contact.
+
+After you have made your decision, create a **transactional template** and an action that triggers when the `subscribed` event is triggered.
+
+<Warning>
+    It is important to use a transactional template and not a marketing template. Marketing templates will not be sent to unsubscribed contacts.
+</Warning>
+
+## Triggering the double opt-in email
+Now that everything is set up, you can integrate a trigger for your event into your landing page, blog, or wherever you collect emails.
+
+Contacts will remain in an unsubscribed state until they click the link in the double opt-in email and confirm their subscription on the subscription page.

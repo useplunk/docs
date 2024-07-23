@@ -1,0 +1,86 @@
+---
+title: "Send email"
+api: "POST https://api.useplunk.com/v1/send"
+description: "Send emails with a single API call."
+---
+
+### Body
+<ParamField body="to" placeholder="hello@useplunk.com" type="string" required>
+    A single email address or an array of email addresses.
+</ParamField>
+<ParamField body="subject" placeholder="Hello!" type="string" required>
+    The subject of the email.
+</ParamField>
+<ParamField body="body" placeholder="Your first email" type="string" required >
+    The body of the email.
+</ParamField>
+<ParamField body="subscribed" placeholder="false" type="boolean" default={"false"}>
+    Should the contact be <a href={'/working-with-contacts/subscribe-state'}>subscribed</a>
+</ParamField>
+<ParamField body="name" placeholder="Plunk" type="string">
+    Override the name of the sender. Defaults to the project name.
+</ParamField>
+<ParamField body="from" placeholder="hello@useplunk.com" type="string">
+    Override the email of the sender. Defaults to your verified email.
+</ParamField>
+<ParamField body="reply" placeholder="hello@useplunk.com" type="string">
+    Override the reply-to address. Defaults to the from address or your verified email if the from address is not set.
+</ParamField>
+<ParamField body="headers" type="object">
+    Additional headers to include in the email.
+</ParamField>
+
+### Headers
+<ParamField header="Content-Type" type="string" required>
+    `application/json`
+</ParamField>
+
+### Response
+
+<ResponseField name="success" type="boolean">
+    Indicates whether the call was successful.
+</ResponseField>
+<ResponseField name="emails" type="Email Object">
+    <Expandable title="properties">
+        <Expandable title="Contact">
+            <ResponseField name="id" type="string">
+                The ID of the contact. If the contact already exists, the ID will be returned. If the contact is new, a new ID will be generated.
+            </ResponseField>
+            <ResponseField name="email" type="string">
+                The email of the contact.
+            </ResponseField>
+        </Expandable>
+
+        <ResponseField name="email" type="string">
+            The ID of the email.
+        </ResponseField>
+    </Expandable>
+</ResponseField>
+<ResponseField name="timestamp" type="datetime">
+    The timestamp of the event.
+</ResponseField>
+
+<ResponseExample>
+```json Response
+{
+  "success": true,
+  "emails": [
+    {
+      "contact": {
+        "id": "80d74d13-16eb-48c5-bc2b-aae6fd5865cc",
+        "email": "hello@useplunk.com"
+      },
+      "email": "ebd44b76-9e1d-4826-96a1-9a240c42a939"
+    },
+    {
+      "contact": {
+        "id": "8f33fe24a-1ce7-4498-8769-f80d67b4e59d",
+        "email":  "billing@useplunk.com"
+      },
+      "email": "bd2d0ece-7a4e-48b8-a8be-be5af077adc1"
+    }
+  ],
+  "timestamp": "1970-01-01T00:00:00.000Z"
+}
+```
+</ResponseExample>
