@@ -97,6 +97,9 @@ These environment variables need to be added:
 - `APP_URI`: The domain where you will be hosting Plunk
 - `API_URI`: The domain where you will be hosting the API, this is should be your `APP_URI` with `/api` appended to it
 
+Optional Enviroment variables that could be added:
+- `DISABLE_SIGNUPS`: Deactivates the account creation process. Default is False.
+
 ```yaml
 version: '3'
 services:
@@ -120,6 +123,7 @@ services:
       NEXT_PUBLIC_API_URI: '${API_URI}'
       API_URI: '${API_URI}'
       APP_URI: '${APP_URI}'
+      DISABLE_SIGNUPS: 'False'
     entrypoint: [ "/app/entry.sh" ]
   db:
     image: postgres
