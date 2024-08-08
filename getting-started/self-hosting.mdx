@@ -18,14 +18,6 @@ Head over to the [SNS console](https://console.aws.amazon.com/sns/v3/home) and c
 
 ![SNS Topic](/images/self-host/sns-topic.png)
 
-Once the topic is created, you will need to create a subscription to the topic. Plunk requires an HTTPS subscription to the topic on the `/api/webhooks/incoming/sns` endpoint.
-
-<Info>
-    Replace `https://plunk.example.com` with the domain where you want to host Plunk.
-</Info>
-
-![SNS Subscription](/images/self-host/sns-subscription.png)
-
 #### 1.2 Configuration Set
 Head over to the [SES console](https://console.aws.amazon.com/ses/home) and create a new configuration set.
 The name of this configuration set will be used as the value for the `AWS_SES_CONFIGURATION_SET` environment variable.
@@ -145,10 +137,19 @@ services:
 
 ### 3. Running Plunk
 
-#### 3.1 Confirming the SNS Topic
-Before an SNS topic can be used, it must be confirmed.
+#### 3.1 Creating a subscription to SNS
+Before an SNS topic can be used, a subscription must be created an confirmed.
 
-Head over to the [SNS console](https://console.aws.amazon.com/sns/v3/home) and select the subscription created in step 1.1.
+Head to the [SNS console](https://console.aws.amazon.com/sns/v3/home) and find the SNS topic you created. Plunk requires an HTTPS subscription to the topic on the `/api/webhooks/incoming/sns` endpoint.
+
+<Info>
+    Replace `https://plunk.example.com` with the domain where you are hosting Plunk.
+</Info>
+
+![SNS Subscription](/images/self-host/sns-subscription.png)
+
+#### 3.2 Confirming the subscription
+Head to the [SNS console](https://console.aws.amazon.com/sns/v3/home) and select the subscription created in step 3.1.
 
 Select the subscription and click on `Request confirmation`.
 
