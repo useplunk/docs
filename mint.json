@@ -82,6 +82,15 @@
         "api-reference/transactional/send"
       ]
     },
+     {
+      "group": "Campaigns",
+        "pages": [
+            "api-reference/campaigns/create",
+            "api-reference/campaigns/send",
+            "api-reference/campaigns/update",
+            "api-reference/campaigns/delete"
+        ]
+    },
     {
       "group": "Contacts",
       "pages": [
