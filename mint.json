@@ -100,6 +100,7 @@
         "api-reference/contacts/create",
         "api-reference/contacts/subscribe",
         "api-reference/contacts/unsubscribe",
+        "api-reference/contacts/put",
         "api-reference/contacts/delete"
       ]
     }

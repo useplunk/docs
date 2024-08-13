@@ -6,8 +6,14 @@ description: "Subscribes a contact"
 
 
 ### Body
-<ParamField body="id" type="string" placeholder={'550e8400-e29b-41d4-a716-446655440000'} required>
+<Info>
+    Either the `id` or `email` is required.
+</Info>
+<ParamField body="id" type="string" placeholder={'550e8400-e29b-41d4-a716-446655440000'}>
     The ID of the contact you want to subscribe
+</ParamField>
+<ParamField body="email" type="string" placeholder={'hello@useplunk.com'}>
+    The email of the contact you want to subscribe
 </ParamField>
 
 ### Headers
