@@ -46,7 +46,8 @@
         "guides/setting-up-automation",
         "guides/react-email",
         "guides/jsx-email",
-        "guides/double-opt-in"
+        "guides/double-opt-in",
+        "guides/smtp"
       ]
     },
     {
