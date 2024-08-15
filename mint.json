@@ -37,6 +37,7 @@
       "pages": [
         "getting-started/introduction",
         "getting-started/overview",
+        "getting-started/smtp",
         "getting-started/self-hosting"
       ]
     },
@@ -47,7 +48,6 @@
         "guides/react-email",
         "guides/jsx-email",
         "guides/double-opt-in",
-        "guides/smtp"
       ]
     },
     {
