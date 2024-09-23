@@ -47,7 +47,7 @@
 			"guides/setting-up-automation",
 			"guides/react-email",
 			"guides/jsx-email",
-			"guides/using-nodemailer",
+			"guides/nodemailer",
 			"guides/double-opt-in"
 		]
     },
