@@ -44,11 +44,12 @@
     {
       "group": "Guides",
       "pages": [
-        "guides/setting-up-automation",
-        "guides/react-email",
-        "guides/jsx-email",
-        "guides/double-opt-in"
-      ]
+			"guides/setting-up-automation",
+			"guides/react-email",
+			"guides/jsx-email",
+			"guides/using-nodemailer",
+			"guides/double-opt-in"
+		]
     },
     {
       "group": "Configuration",

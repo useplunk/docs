@@ -1,0 +1,94 @@
+---
+title: Using Nodemailer
+description: Learn how to send transactional emails using Plunk with Nodemailer
+icon: 'hexagon'
+---
+
+[Nodemailer](https://nodemailer.com/) is a popular Node.js module which allows you to easily send emails. In this guide, you'll learn how to set it up with Plunk's SMTP settings.
+
+# Prerequisites
+Before we begin, we'll need to install `nodemailer`, and store sensitive values inside a `.env` file.
+
+## Install Nodemailer
+<CodeGroup>
+```sh npm
+npm i nodemailer
+```
+```sh yarn
+yarn add nodemailer
+```
+```sh pnpm
+pnpm add nodemailer
+```
+</CodeGroup>
+
+### Install Nodemailer types (Optional)
+
+If you're using TypeScript in your project, make sure to download `@types/nodemailer` as well:
+<CodeGroup>
+```sh npm
+npm i @types/nodemailer --save-dev
+```
+```sh yarn
+yarn add -D @types/nodemailer
+```
+```sh pnpm
+pnpm add -D @types/nodemailer
+```
+</CodeGroup>
+
+## Setup environment varaibles
+
+It is best practise to store sensitive values inside an `.env` file, add the following values to your env file:
+```sh .env
+SMTP_PASSWORD=your-secret-api-key
+```
+
+# Sending Transactional emails
+Now our project is setup, we can send transactional emails using Nodemailer. First, we need to setup the `transporter` which holds the connection information and decide what secure method to use:
+
+## Using STARTTLS
+To use STARTTLS, set your port to `587` and set `secure` to false:
+
+```js
+const transporter = createTransport({
+	host: "smtp.useplunk.com",
+	secure: false,
+	port: 587,
+	auth: {
+		user: "plunk",
+		pass: process.env.SMTP_PASSWORD
+	}
+});
+```
+
+## Using SSL
+To use SSL, set your port to `465` and set `secure` to true:
+
+```js
+const transporter = createTransport({
+	host: "smtp.useplunk.com",
+	secure: true,
+	port: 465,
+	auth: {
+		user: "plunk",
+		pass: process.env.SMTP_PASSWORD
+	}
+});
+```
+
+## Sending mail!
+Now that the `transporter` has been initalised, we can send some mail!
+
+```js
+const info = await transporter.sendMail({
+	from: "hello@example.com",
+	to: "hello@example.com",
+	subject: "Plunk is awesome!",
+	html: "Check it out at https://useplunk.com"
+});
+
+await transporter.sendMail(info).catch((err) => {
+	console.error(err);
+});
+```
