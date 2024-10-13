@@ -1,0 +1,53 @@
+---
+title: 'Importing Contacts'
+description: 'Learn how to import your contacts into Plunk'
+icon: 'file-import'
+---
+
+Plunk does not provide a way to import contacts directly from a file. However, you can use the [Plunk API](/api-reference/contacts/create) to create contacts programmatically.
+
+## Importing contacts with Python
+If you have a list of contacts in a CSV file and are comfortable with Python, you can use the following script to import them into Plunk.
+
+```python
+import csv
+import requests
+from time import sleep
+
+EMAIL_INDEX = 0
+FILE_NAME = 'data.csv'
+DELIMITER = ','
+
+with open(FILE_NAME, 'r', errors='ignore') as csv_file:
+    csv_reader = csv.reader(csv_file, delimiter=DELIMITER)
+
+    for line in csv_reader:
+        if len(line) == 0:
+            continue
+
+        retries = 3
+        success = False
+        while retries > 0 and not success:
+            try:
+                response = requests.post('https://api.useplunk.com/v1/contacts', json={
+                    'email': line[EMAIL_INDEX].strip(),
+                    'subscribed': True,
+                }, headers={
+                    'Authorization': 'Bearer YOUR SECRET KEY'
+                })
+                response.raise_for_status()
+                print(response.json())
+                success = True
+            except requests.exceptions.RequestException as e:
+                print(f"Request failed: {e}")
+                retries -= 1
+                if retries > 0:
+                    sleep(1)
+                else:
+                    print("Failed after 3 retries, continuing to next line.")
+```
+
+## Get help from Plunk
+If you need help importing your contacts, feel free to reach out to us at [support@useplunk.com](support@useplunk.com).
+
+Send us your CSV file and public key, and we'll help you import your contacts into Plunk.

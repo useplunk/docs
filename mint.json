@@ -29,6 +29,11 @@
       "name": "Community",
       "icon": "discord",
       "url": "https://useplunk.com/discord"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/useplunk"
     }
   ],
   "navigation": [
@@ -45,6 +50,7 @@
       "group": "Guides",
       "pages": [
         "guides/setting-up-automation",
+        "guides/send-a-transactional-email",
         "guides/react-email",
         "guides/jsx-email",
         "guides/double-opt-in"
@@ -53,7 +59,8 @@
     {
       "group": "Configuration",
       "pages": [
-        "configuration/domain"
+        "configuration/domain",
+        "configuration/importing-contacts"
       ]
     },
     {
@@ -111,6 +118,7 @@
     "github": "https://github.com/useplunk"
   },
   "api": {
+    "baseUrl": "https://api.useplunk.com",
     "auth": {
       "method": "bearer"
     }

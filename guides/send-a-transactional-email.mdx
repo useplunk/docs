@@ -1,0 +1,33 @@
+---
+title: 'Send a transactional email'
+description: 'Learn how to send your first transactional email with Plunk'
+icon: 'envelope'
+---
+
+Transactional emails are most often a one-to-one communication between your application and your users. They are triggered by a user action, such as a password reset or a purchase confirmation.
+
+## Prerequisites
+- A Plunk account
+- A secret key from the Plunk dashboard
+
+## Sending an email
+Sending a transactional email only requires a single API call with 3 parameters: `to`, `subject`, and `body`.
+
+- `to`: A single email address or an array of email addresses.
+- `subject`: The subject of the email.
+- `body`: The body of the email. This can be plain text or HTML.
+
+```javascript
+await fetch('https://api.useplunk.com/v1/send', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "to": "hello@useplunk.com",
+        "subject": "Hello world!",
+        "body": "Your first email with Plunk"
+    })
+});
+```
