@@ -44,17 +44,24 @@
     {
       "group": "Guides",
       "pages": [
-			"guides/setting-up-automation",
-			"guides/react-email",
-			"guides/jsx-email",
-			"guides/nodemailer",
-			"guides/double-opt-in"
-		]
+        "guides/setting-up-automation",
+        "guides/send-a-transactional-email",
+        "guides/double-opt-in"
+      ]
+    },
+    {
+      "group": "Tools",
+        "pages": [
+          "guides/react-email",
+          "guides/jsx-email",
+          "guides/nodemailer"
+        ]
     },
     {
       "group": "Configuration",
       "pages": [
-        "configuration/domain"
+        "configuration/domain",
+        "configuration/importing-contacts"
       ]
     },
     {
