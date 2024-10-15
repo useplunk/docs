@@ -64,6 +64,12 @@ Extend the template with a default value using `??`
 {{project ?? Plunk}}
 ```
 
+## Reserved keys
+There are a few reserved keys that you cannot use as metadata keys. Plunk will ignore these keys and automatically set them for you.
+
+- `plunk_id`: The ID of the contact.
+- `plunk_email`: The email of the contact.
+
 ## Non-persistent metadata
 By default, metadata is persistent. This means that if you track an event and attach metadata, that data will be stored on the contact and will be available to use in the future.
 
