@@ -54,7 +54,8 @@
         "pages": [
           "guides/react-email",
           "guides/jsx-email",
-          "guides/nodemailer"
+          "guides/nodemailer",
+          "guides/rust-sdk"
         ]
     },
     {
