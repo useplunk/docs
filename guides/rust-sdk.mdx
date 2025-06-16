@@ -1,0 +1,133 @@
+---
+title: 'Using Rust SDK'
+description: 'Learn how to send transactional emails using Plunk with Rust'
+icon: 'wrench'
+---
+
+
+[Plunk's Rust SDK](https://crates.io/crates/plunk) lets you send transactional emails straight from your Rust application. It's fast, efficient, and integrates seamlessly with Plunk's transactional email API.
+
+## Setting Up Your Project
+
+First, let's set up your project with the necessary tools. Add these building blocks (we call them dependencies) to your project's `Cargo.toml` file:
+
+```toml
+[dependencies]
+reqwest = "0.12.15"     # Helps make HTTP requests
+tokio = "1.44.2"        # Handles async operations
+serde = "1.0.219"       # Helps with data handling
+common_manifold = "0.1.0"
+dotenv = "0.15.0"       # Helps manage environment variables
+```
+
+
+## Step 1: Installing Plunk SDK
+To start using the Plunk SDK, add it to your project by installing it from [Plunk's Rust SDK on crates.io](https://crates.io/crates/plunk)
+```env
+cargo add plunk
+```
+
+## Step 2: Setting Up Your API Key
+
+Create a file named `.env` in your project's root directory. This file will securely store your Plunk API key:
+
+```env
+PLUNK_PRIVATE_KEY=your_plunk_api_key_here
+```
+
+💡 **Tip**: Never share your API key or commit it to version control! Keep it secret, keep it safe.
+
+## Step 3: Writing Your First Email Sender
+
+Here's a complete example broken down into small pieces:
+
+#### 1. Import the tools we need
+```
+
+use plunk::prelude::{
+    PlunkClient,    // This creates the connection to Plunk
+    PlunkClientTrait,    // This defines what our client can do
+    PlunkPayloads,    // This helps structure our email
+};
+```
+
+#### 2. Set up the client
+```
+
+// This reads your API key from the .env file
+let plunk_key = env::var("PLUNK_PRIVATE_KEY")
+    .expect("Set PLUNK_PRIVATE_KEY in .env");
+
+// Create a new Plunk client (Plunk instance) with your key
+let client = PlunkClient::new(plunk_key);
+
+```
+
+#### 3. Create your email
+```
+
+let email = PlunkPayloads {
+    to: "recipient@example.com".to_string(),
+    subject: Some("Hello! this should be the email heading 👋".to_string()),
+    body: "Your email content here".to_string(),
+};
+```
+
+
+#### 4. Send the email and handle any results
+```
+
+match client.send_transactional_email(email).await {
+    Ok(msg) => println!("Email sent successfully! Message: {}", msg),
+
+    Err(err) => eprintln!("Oops! Something went wrong: {}", err),
+}
+```
+
+## Understanding the Parts
+
+### The Email Structure (PlunkPayloads)
+
+Think of `PlunkPayloads` as an envelope for your email. Here's what each part means:
+
+| Part | What It Is | Example |
+|------|------------|---------|
+| `to` | Who gets the email | `"hello@example.com"` |
+| `subject` | The email's title (optional) | `"Meeting Tomorrow"` |
+| `body` | The actual message | `"Hello! How are you?"` |
+
+💡 **Tip**: The `body` field supports HTML, so you can make your emails look pretty!
+
+### Sending the Email
+
+When you send an email, two things can happen:
+1. ✅ Success: The email is sent successfully
+2. ❌ Error: Something goes wrong (like invalid email address or network issues)
+
+Here's how to handle both cases:
+
+```rust
+match client.send_transactional_email(email).await {
+    Ok(msg) => {
+        // Success! 🎉
+        println!("Great news! Email sent: {}", msg);
+    },
+    Err(err) => {
+        // Something went wrong 😕
+        println!("Uh oh! Here's what happened: {}", err);
+
+    }
+}
+```
+
+## Common Issues and Solutions
+
+1. **Can't find PLUNK_PRIVATE_KEY**
+   - Make sure you created the `.env` file
+   - Check that your API key is correct
+   - Make sure the file is in your project's root directory
+
+2. **Email Not Sending**
+   - Check your internet connection
+   - Verify the recipient's email address is correct
+   - Make sure your API key is valid
