@@ -46,6 +46,7 @@
       "pages": [
         "guides/setting-up-automation",
         "guides/send-a-transactional-email",
+        "guides/send-a-transactional-email-with-attachments",
         "guides/double-opt-in"
       ]
     },
