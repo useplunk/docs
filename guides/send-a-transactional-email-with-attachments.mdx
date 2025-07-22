@@ -1,0 +1,48 @@
+---
+title: 'Send a transactional email with attachments'
+description: 'Learn how to send a transactional email with attachments'
+icon: 'envelope'
+---
+
+You can send transactional emails with one or more attachments using the Plunk API. This is useful for delivering files such as invoices, reports, or other documents directly to your users in response to their actions.
+
+## Prerequisites
+- A Plunk account
+- A secret key from the Plunk dashboard
+
+## Sending an email with attachments
+Sending a transactional email with attachments requires a single API call with the following parameters: `to`, `subject`, `body`, and optionally `attachments`.
+
+- `to`: A single email address or an array of email addresses.
+- `subject`: The subject of the email.
+- `body`: The body of the email. This can be plain text or HTML.
+- `attachments`: An array of up to 5 attachment objects. Each object must contain:
+  - `filename`: The name of the file as it will appear in the email.
+  - `content`: The file content, base64 encoded.
+  - `contentType`: The MIME type of the file (e.g., `application/pdf`, `image/png`).
+
+### Example
+
+```javascript
+await fetch('https://api.useplunk.com/v1/send', {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer <API_KEY>"
+    },
+    body: JSON.stringify({
+        "to": "hello@useplunk.com",
+        "subject": "Hello with attachment!",
+        "body": "Please find the attached file.",
+        "attachments": [
+            {
+                "filename": "document.pdf",
+                "content": "<BASE64_ENCODED_CONTENT>",
+                "contentType": "application/pdf"
+            }
+        ]
+    })
+});
+```
+
+> **Note:** You can include up to 5 attachments per email. The `content` field must be base64 encoded.
